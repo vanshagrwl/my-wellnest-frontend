@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reminders </title>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+             /* Use flexbox for body to push footer down if content is short */
+             display: flex;
+             flex-direction: column;
+             min-height: 100vh;
+        }
+
+        /* Consistent Header Styling */
+        header {
+            background-color: #f8f9fa; /* Light background */
+            padding: 10px 20px; /* Consistent padding */
+            display: flex; /* Make header a flex container */
+            justify-content: space-between; /* Space out logo and nav */
+            align-items: center; /* Vertically align */
+            flex-wrap: wrap; /* Allow nav to wrap on smaller screens */
+             flex-shrink: 0; /* Prevent header from shrinking */
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+             color: inherit;
+             flex-shrink: 0; /* Prevent logo from shrinking */
+        }
+
+        .logo img {
+            height: 45px; /* Consistent logo height (adjust if needed) */
+            margin-right: 10px;
+        }
+
+        .logo span {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .main-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex; /* Make ul a flex container */
+            align-items: center; /* Vertically align nav items */
+            flex-wrap: wrap; /* Allow nav items to wrap */
+        }
+
+        .main-nav li {
+            margin-left: 20px; /* Space between nav items */
+        }
+
+        .main-nav a {
+            text-decoration: none;
+            color: #333;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .main-nav a:hover,
+        .main-nav a.active {
+            background-color: #5cb85c; /* Green highlight for active link */
+            color: white;
+        }
+
+         /* Styling for nested sub-menu (from index.html) */
+         .main-nav ul ul {
+             display: none;
+             position: absolute;
+             background-color: #f8f9fa;
+             box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+             z-index: 1;
+             padding: 10px 0;
+             border-radius: 5px;
+         }
+
+          .main-nav li:hover > ul {
+              display: block;
+          }
+
+          .main-nav ul li {
+              margin: 0;
+              padding: 8px 20px;
+              white-space: nowrap;
+          }
+
+         .main-nav ul li a {
+             padding: 0;
+             color: #333;
+         }
+
+         .main-nav ul li a:hover {
+             background-color: transparent;
+             color: #5cb85c;
+         }
+
+
+         /* Style for images within nav links (like the cart icon) */
+         .main-nav a img {
+              height: 25px; /* Consistent icon height (adjust if needed) */
+              vertical-align: middle;
+              margin-right: 0; /* No margin needed if icon is the only content */
+         }
+
+
+        .reminder-container {
+            max-width: 800px;
+            margin: 20px auto; /* Adjust top margin to accommodate header */
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box; /* Include padding */
+            width: 95%; /* Responsive width */
+             flex-grow: 1; /* Allow container to grow and push footer down */
+        }
+
+        .reminder-container h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .reminder-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .reminder-item {
+            background-color: #f9f9f9;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            border: 1px solid #eee;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: space-between; /* Space out details and actions */
+             flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+        }
+
+        .reminder-icon {
+            font-size: 24px;
+            color: #007bff; /* Default Primary color */
+             flex-shrink: 0; /* Prevent icon from shrinking */
+        }
+
+        .reminder-details {
+            flex-grow: 1;
+            margin-right: 20px; /* Space between details and actions */
+             min-width: 200px; /* Ensure details section has a minimum width */
+        }
+
+        .reminder-details h3 {
+            margin-top: 0;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .reminder-details p {
+            color: #777;
+            margin-bottom: 3px;
+            font-size: 0.95em;
+        }
+
+         .reminder-details p strong {
+            color: #555; /* Make labels slightly darker */
+         }
+
+
+        .reminder-actions {
+            display: flex;
+            gap: 10px;
+            flex-shrink: 0; /* Prevent actions from shrinking */
+        }
+
+        .reminder-actions button {
+            background-color: #007bff; /* Primary color for default button */
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease;
+        }
+
+        .reminder-actions button:hover {
+            background-color: #0056b3;
+        }
+
+
+        .reminder-actions button.delete {
+            background-color: #dc3545; /* Danger color */
+        }
+
+        .reminder-actions button.delete:hover {
+            background-color: #c82333;
+        }
+
+        /* Specific icons and colors for different appointment types */
+        .reminder-item.doctor .reminder-icon { color: #007bff; } /* Blue */
+        .reminder-item.trainer .reminder-icon { color: #ffc107; } /* Yellow/Amber */
+        .reminder-item.nutritionist .reminder-icon { color: #28a745; } /* Green */
+
+         /* Style for the "No appointments" message */
+        .no-appointments-message {
+            text-align: center;
+            color: #777;
+            margin-top: 30px;
+            font-size: 1.1em;
+        }
+
+         /* Footer styles - MATCHING index.html */
+         footer {
+             background-color: #333;
+             color: white;
+             padding: 20px;
+             text-align: center;
+             margin-top: 30px; /* Adds space above footer */
+              flex-shrink: 0; /* Prevent footer from shrinking in flex layout */
+              /* No position: fixed or similar */
+         }
+
+         footer ul {
+             list-style: none;
+             padding: 0;
+             margin: 0 0 15px 0;
+         }
+
+         footer ul li {
+             display: inline;
+             margin: 0 10px;
+         }
+
+         footer ul li a {
+             color: white;
+             text-decoration: none;
+         }
+
+         footer ul li a:hover {
+             text-decoration: underline;
+         }
+
+         .contact-details { /* Assuming this class name is used for a contact list in footer */
+              list-style: none;
+              padding: 0;
+              margin-bottom: 15px;
+              font-weight: bold;
+         }
+
+         .contact-details li {
+              display: block; /* Display list items vertically */
+              margin: 5px 0;
+              font-weight: normal;
+         }
+
+         .contact-details li a {
+              color: white;
+              text-decoration: none;
+         }
+
+          .contact-details li a:hover {
+              text-decoration: underline;
+          }
+
+
+         .float-right {
+             float: right;
+         }
+
+         .float-right a {
+              color: white;
+              text-decoration: none;
+         }
+          .float-right a:hover {
+             text-decoration: underline;
+          }
+
+         footer p {
+             margin: 5px 0;
+         }
+          footer p a {
+              color: white;
+              text-decoration: none;
+          }
+          footer p a:hover {
+              text-decoration: underline;
+          }
+
+
+    </style>
+</head>
+
+<body>
+    <header>
+         <a href="index.html" class="logo">
+             <img src="images/Mental-Health-Logo-final.jpg" alt="MY WELLNEST">
+             <span>MY WELLNEST</span>
+         </a>
+         <nav class="main-nav">
+             <ul>
+                 <li><a href="index.html">HOME</a></li>
+                 <li><a href="about.html">ABOUT US</a></li>
+                 <li><a href="contact-us.html">CONTACT US</a></li>
+         </nav>
+         </header>
+
+    <div class="reminder-container">
+        <h1>Your Upcoming Appointments</h1>
+        <ul class="reminder-list">
+            </ul>
+         <p class="no-appointments-message">No more upcoming appointments beyond these.</p>
+    </div>
+
+    <footer>
+        <ul class="footer-details">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact-us.html">Contact Us</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">signup</a></li>
+        </ul>
+        <ul class="contact-details">Quick Contact Details
+            <li>Address:A-15,Malviya nagar,Jaipur</li>
+            <li>Contact No. : 8441912317</li>
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">LinkedIn</a></li>
+        </ul>
+        <p class="float-right"><a href="#">Back to top</a></p>
+        <p>© 2025 MY WELLNEST, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const reminderList = document.querySelector('.reminder-list');
+            const noAppointmentsMessage = document.querySelector('.no-appointments-message');
+
+            // Function to fetch and display appointments
+            function fetchAndDisplayAppointments() {
+                // This fetch call requires the backend server to be running
+                fetch('https://my-wellnest.netlify.app//api/appointments') // Your backend endpoint
+                    .then(response => {
+                        if (!response.ok) {
+                             // Handle HTTP errors
+                             console.error(`HTTP error! status: ${response.status}`);
+                             reminderList.innerHTML = '<li>Could not load appointments. Please ensure the backend server is running on http://localhost:3001.</li>';
+                             noAppointmentsMessage.style.display = 'none';
+                             throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(appointments => {
+                        // Clear existing list items before adding new ones
+                        reminderList.innerHTML = '';
+
+                        if (!appointments || appointments.length === 0) {
+                            noAppointmentsMessage.style.display = 'block';
+                        } else {
+                            noAppointmentsMessage.style.display = 'none';
+                            // Sort appointments by date and time (optional but recommended)
+                            appointments.sort((a, b) => {
+                                const dateTimeA = new Date(`${a.date}T${a.time}`);
+                                const dateTimeB = new Date(`${b.date}T${b.time}`);
+                                return dateTimeA - dateTimeB;
+                            });
+
+                            appointments.forEach(appointment => {
+                                const listItem = document.createElement('li');
+                                // Add class based on appointment type for styling and icon
+                                const typeClass = appointment.type.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+                                listItem.classList.add('reminder-item', typeClass);
+
+                                // Determine the correct icon based on type
+                                let iconClass = 'fas fa-calendar-alt'; // Default icon
+                                if (appointment.type === 'Doctor') {
+                                    iconClass = 'fas fa-user-md';
+                                } else if (appointment.type === 'Trainer') {
+                                    iconClass = 'fas fa-dumbbell';
+                                } else if (appointment.type === 'Nutritionist') {
+                                    iconClass = 'fas fa-utensils';
+                                }
+
+                                // === Add a data attribute to identify the appointment for deletion ===
+                                // Assuming appointments have a unique ID from the backend response, e.g., appointment.id
+                                // If your backend uses a different property for the unique ID, replace 'appointment.id'
+                                if (appointment.id) { // Check if ID exists
+                                   listItem.dataset.appointmentId = appointment.id;
+                                } else {
+                                    console.warn("Appointment object missing a unique 'id' property for cancellation.");
+                                    // You might need a different way to identify items if no ID is available
+                                }
+
+
+                                listItem.innerHTML = `
+                                    <i class="${iconClass} reminder-icon"></i>
+                                    <div class="reminder-details">
+                                        <h3>${appointment.type} Appointment</h3>
+                                        <p><strong>With:</strong> ${appointment.name}</p>
+                                        <p><strong>Date:</strong> ${appointment.date}</p>
+                                        <p><strong>Time:</strong> ${appointment.time}</p>
+                                        ${appointment.notes ? `<p><strong>Notes:</strong> ${appointment.notes}</p>` : ''}
+                                    </div>
+                                    <div class="reminder-actions">
+                                        
+                                        <button class="delete">Cancel</button> </div>
+                                `;
+                                reminderList.appendChild(listItem);
+                            });
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error fetching appointments:', error);
+                        reminderList.innerHTML = '<li>Error loading appointments. Please ensure the backend server is running on http://localhost:3001.</li>';
+                        noAppointmentsMessage.style.display = 'none';
+                    });
+            }
+
+            // Fetch and display appointments when the page loads
+            fetchAndDisplayAppointments();
+
+            // === Add event listener for the Cancel button clicks using event delegation ===
+            // We add the listener to the parent list (reminderList) because list items are added dynamically.
+            reminderList.addEventListener('click', function(event) {
+                // Check if the clicked element, or a parent of the clicked element, is the button with class 'delete'
+                const deleteButton = event.target.closest('.delete');
+
+                // If a delete button was clicked
+                if (deleteButton) {
+                    const listItem = deleteButton.closest('.reminder-item'); // Get the parent <li> (the reminder item)
+
+                    if (listItem) {
+                        // === Get the appointment identifier from the data attribute ===
+                        const appointmentId = listItem.dataset.appointmentId;
+
+                        if (!appointmentId) {
+                             console.error("Could not get appointment ID for cancellation.");
+                             alert("Cannot cancel appointment: Missing ID.");
+                             return; // Stop if no ID is available
+                        }
+
+
+                        // === Frontend Removal (for immediate visual feedback) ===
+                        listItem.remove(); // Remove the list item from the DOM
+
+                        // === Check if the list is now empty and update the "No appointments" message ===
+                        const remainingItems = reminderList.querySelectorAll('.reminder-item');
+                        if (remainingItems.length === 0) {
+                            noAppointmentsMessage.style.display = 'block';
+                        } else {
+                             noAppointmentsMessage.style.display = 'none'; // Hide message if items exist
+                        }
+
+
+                        // === Backend Deletion (CRITICAL for persistent data) ===
+                        // In a real application, you MUST send a request to your backend server
+                        // to actually delete this appointment from your database using the appointmentId.
+                        console.log(`[Frontend] Simulating cancellation of appointment with ID: ${appointmentId}`);
+
+                        /*
+                         // Example fetch request to your backend's delete endpoint
+                         fetch(`http://localhost:3001/api/appointments/${appointmentId}`, { // Adjust URL/endpoint as needed
+                             method: 'DELETE', // Use the appropriate HTTP method (DELETE is common for deletion)
+                             // You might need to include headers (e.g., Content-Type, Authorization)
+                             // If your backend expects the ID in the request body, change method to POST/PUT
+                             // and include body: JSON.stringify({ id: appointmentId })
+                         })
+                         .then(response => {
+                             if (!response.ok) {
+                                 // If the backend deletion fails (e.g., server error, not found),
+                                 // you should inform the user and potentially revert the frontend removal.
+                                 console.error(`Backend deletion failed for appointment ${appointmentId}: ${response.status}`);
+                                 alert('Failed to cancel appointment on the server. Please try again.');
+                                 // Optional: Re-fetch and display appointments to restore the list item
+                                 // fetchAndDisplayAppointments();
+                             } else {
+                                 console.log(`Appointment ${appointmentId} cancelled successfully on backend.`);
+                                 // Frontend removal and message update are already handled above on success
+                             }
+                         })
+                         .catch(error => {
+                             console.error(`Error sending cancellation request for appointment ${appointmentId}:`, error);
+                             alert('An error occurred while trying to cancel the appointment.');
+                             // Optional: Re-fetch and display appointments to restore the list item
+                             // fetchAndDisplayAppointments();
+                         });
+                         */
+                         // === End Backend Deletion Placeholder ===
+                    }
+                }
+            });
+            // === End Event Listener ===
+
+
+            // Add any other JavaScript for reminder.html below this line
+
+        }); // Correct closing brace for DOMContentLoaded
+    </script>
+</body>
+
+</html>

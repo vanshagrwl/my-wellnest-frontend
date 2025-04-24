@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - MY WELLNESS</title> <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2&display=swap" rel="stylesheet">
+    <style>
+        /* --- Keep ALL your existing CSS rules --- */
+        body {
+            font-family: 'Baloo Bhai 2', sans-serif; /* Applied font */
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header Styles (consistent) */
+        header {
+            background-color: #f8f9fa;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+            position: relative; /* Needed for flash message positioning */
+            z-index: 10; /* Ensure header is above potential body content */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Added subtle shadow */
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+            flex-shrink: 0;
+        }
+
+        .logo img {
+            height: 45px;
+            margin-right: 10px;
+        }
+
+        .logo span {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .main-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .main-nav li {
+            margin-left: 20px;
+            position: relative; /* For potential dropdowns */
+        }
+
+        .main-nav a {
+            text-decoration: none;
+            color: #333;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease; /* Added color transition */
+            display: block; /* Ensure links behave predictably */
+            font-weight: 500; /* Slightly bolder nav links */
+        }
+
+        .main-nav a:hover,
+        .main-nav a.active { /* Example active class */
+            background-color: #5cb85c;
+            color: white;
+        }
+
+         /* Login Page Specific Styles */
+        .login-container {
+            max-width: 400px;
+            margin: 50px auto; /* Adjust top margin if needed */
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+            text-align: center;
+            flex-grow: 1; /* Allow container to grow */
+        }
+
+        .login-container h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: 600; /* Bolder heading */
+        }
+
+        .login-form .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .login-form label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .login-form input[type="text"],
+        .login-form input[type="password"],
+        .login-form input[type="email"] { /* Added email type just in case */
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 1em;
+            font-family: inherit; /* Inherit body font */
+        }
+
+        .login-form input:focus {
+            outline: none;
+            border-color: #5cb85c;
+            box-shadow: 0 0 5px rgba(92, 184, 92, 0.5);
+        }
+
+        .login-button {
+            display: block;
+            width: 100%;
+            background-color: #5cb85c; /* Matched theme green */
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold; /* Bold button text */
+            transition: background-color 0.3s ease, transform 0.1s ease; /* Added transform */
+            margin-top: 20px;
+        }
+
+        .login-button:hover {
+            background-color: #4cae4c; /* Darker green on hover */
+        }
+        .login-button:active {
+             transform: scale(0.98); /* Slight shrink on click */
+        }
+
+
+        .login-error-message { /* Renamed from login-error */
+            color: #dc3545; /* Bootstrap danger color */
+            font-size: 0.9em;
+            margin-top: 15px;
+            min-height: 1.1em; /* Reserve space */
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .signup-link {
+            margin-top: 25px; /* Increased space */
+            font-size: 0.95em; /* Slightly larger */
+        }
+
+        .signup-link a {
+            color: #007bff; /* Standard link blue */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer Styles (consistent) */
+        footer {
+            background-color: #333;
+            color: #ccc; /* Lighter base color */
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: auto; /* Push footer down */
+            flex-shrink: 0;
+            font-size: 0.9em;
+        }
+
+        footer ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+        /* Style for the main footer links */
+        footer ul.footer-details li {
+             display: inline-block; /* Use inline-block for better spacing control */
+             margin: 0 10px 10px; /* Add bottom margin for wrapping */
+        }
+         footer ul.footer-details li a {
+            color: #f0f0f0; /* Brighter link color */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        footer ul.footer-details li a:hover {
+             color: white;
+             text-decoration: underline;
+        }
+
+        /* Style for contact details list */
+        .contact-details {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 15px;
+        }
+
+        .contact-details li {
+            display: block;
+            margin: 8px auto; /* Slightly more space */
+            font-weight: normal;
+            color: #ddd; /* Lighter contact details */
+        }
+
+        .contact-details li a {
+            color: #f0f0f0; /* Match footer link color */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-details li a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        /* Removed float-right - prefer centering or flexbox */
+
+        footer p {
+            margin: 10px 0 0; /* Space above copyright */
+            clear: both;
+            color: #aaa; /* Dimmer copyright text */
+            font-size: 0.85em;
+        }
+        footer p a {
+            color: #ccc; /* Link color in copyright */
+            text-decoration: none;
+        }
+        footer p a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        /* --- Styles for Flash Messages Container --- */
+        .flash-messages-container {
+            position: fixed;
+            top: 80px; /* Adjust based on header height */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            width: 90%;
+            max-width: 500px;
+            pointer-events: none;
+        }
+
+        .flash-message {
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            opacity: 0; /* Start hidden */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            pointer-events: auto;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            animation: fadeInAndOut 5s ease-in-out forwards; /* Combined animation */
+            transform: translateY(-20px); /* Start slightly above */
+        }
+
+        .flash-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .flash-message.error { /* For login errors */
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .flash-message span {
+             flex-grow: 1;
+             margin-right: 10px;
+        }
+
+        .flash-message button {
+            background: none;
+            border: none;
+            color: inherit;
+            font-size: 1.4em;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0 5px;
+            line-height: 1;
+        }
+
+        /* Keyframes for fade in and out animation */
+        @keyframes fadeInAndOut {
+            0% { opacity: 0; transform: translateY(-20px); } /* Start hidden and above */
+            10% { opacity: 1; transform: translateY(0); } /* Fade in and drop down */
+            90% { opacity: 1; transform: translateY(0); } /* Hold */
+            100% { opacity: 0; transform: translateY(-10px); } /* Fade out and move up */
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">
+            <img src="images/Mental-Health-Logo-final.jpg" alt="MY WELLNEST Logo">
+            <span>MY WELLNEST</span>
+        </a>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="about.html">ABOUT US</a></li>
+                <li><a href="contact-us.html">CONTACT US</a></li>
+                <li><a href="signup.html">SIGN UP</a></li> </ul>
+        </nav>
+    </header>
+
+    <div class="flash-messages-container">
+    </div>
+
+    <div class="login-container">
+        <h1>Login</h1>
+        <form id="login-form" class="login-form" novalidate> <div class="form-group">
+                <label for="email">Email or Username:</label> <input type="text" id="email" name="username" required> </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="login-button">Login</button>
+            <div id="login-error-message" class="login-error-message"></div>
+        </form>
+        <div class="signup-link">
+            Don't have an account? <a href="signup.html">Sign Up Here</a>
+        </div>
+    </div>
+
+    <footer>
+        <ul class="footer-details">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact-us.html">Contact Us</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+        <ul class="contact-details">
+             <li><i class="fas fa-map-marker-alt"></i> A-15, Malviya Nagar, Jaipur</li>
+            <li><i class="fas fa-phone"></i> +91 8441912317</li>
+            <li><a href="#"><i class="fab fa-facebook-f"></i> Facebook</a></li>
+            <li><a href="#"><i class="fab fa-linkedin-in"></i> LinkedIn</a></li>
+        </ul>
+        <p>© 2025 MY WELLNEST, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('login-form');
+            const emailInput = document.getElementById('email'); // Input can be email or username
+            const passwordInput = document.getElementById('password');
+            const loginErrorDiv = document.getElementById('login-error-message'); // Corrected ID
+            const flashContainer = document.querySelector('.flash-messages-container');
+
+            // --- Helper function to get users from localStorage (INSECURE DEMO) ---
+            function getUsersFromStorage() {
+                const usersJson = localStorage.getItem('demoUsers'); // Assumes users are stored here by signup.html
+                try {
+                    return usersJson ? JSON.parse(usersJson) : {};
+                } catch (e) {
+                    console.error("Error parsing users from localStorage:", e);
+                    return {}; // Return empty object on error
+                }
+            }
+
+            // --- Helper function to display flash messages ---
+            function showFlashMessage(message, type = 'success') {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('flash-message', type); // 'success' or 'error'
+                messageDiv.innerHTML = `<span>${message}</span> <button>&times;</button>`; // Use &times; for 'x'
+
+                 // Remove button functionality
+                messageDiv.querySelector('button').addEventListener('click', function() {
+                    // Add a fade-out effect before removing
+                    messageDiv.style.transition = 'opacity 0.3s ease-out';
+                    messageDiv.style.opacity = '0';
+                    setTimeout(() => {
+                        messageDiv.remove();
+                    }, 300); // Remove after fade out
+                });
+
+                flashContainer.appendChild(messageDiv);
+
+                // Optional: Auto-remove after some time (already handled by CSS animation)
+                // setTimeout(() => {
+                //     if (messageDiv.parentNode) { // Check if not already removed by button
+                 //         messageDiv.style.transition = 'opacity 0.5s ease-out';
+                 //         messageDiv.style.opacity = '0';
+                 //         setTimeout(() => messageDiv.remove(), 500);
+                //     }
+                // }, 4500); // Remove after 4.5 seconds
+            }
+
+            // --- 1. Check for Sign Up Flash Message & Pre-fill Email ---
+            const signupStatus = sessionStorage.getItem('signupStatus');
+            const signupEmail = sessionStorage.getItem('signupEmail');
+
+            if (signupStatus === 'success') {
+                showFlashMessage('Sign up successful! Please log in.', 'success');
+
+                if (signupEmail) {
+                    emailInput.value = signupEmail;
+                    passwordInput.focus(); // Focus password field
+                }
+
+                // Clean up sessionStorage items immediately after use
+                sessionStorage.removeItem('signupStatus');
+                sessionStorage.removeItem('signupEmail');
+            }
+
+             // --- 2. Handle Login Form Submission ---
+            loginForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission
+                loginErrorDiv.textContent = ''; // Clear previous errors
+
+                const emailOrUsername = emailInput.value.trim().toLowerCase(); // Lowercase for case-insensitive check
+                const password = passwordInput.value; // Don't trim password
+
+                if (!emailOrUsername || !password) {
+                    loginErrorDiv.textContent = 'Please enter both email/username and password.';
+                    return;
+                }
+
+                // --- Check Credentials against localStorage (INSECURE DEMO) ---
+                const users = getUsersFromStorage();
+                let loginSuccessful = false;
+                let loggedInUserIdentifier = null; // Variable to hold name or email
+
+                // Find user by email or username (case-insensitive)
+                const foundUserKey = Object.keys(users).find(key =>
+                    key.toLowerCase() === emailOrUsername || (users[key].username && users[key].username.toLowerCase() === emailOrUsername)
+                );
+
+                 if (foundUserKey && users[foundUserKey].password === password) {
+                     // === Login Successful (Based on insecure localStorage check) ===
+                     loginSuccessful = true;
+                     // Prioritize fullname, then username, then email as the identifier
+                     loggedInUserIdentifier = users[foundUserKey].fullname || users[foundUserKey].username || foundUserKey;
+                 }
+
+                if (loginSuccessful) {
+                    console.log('Login successful (localStorage DEMO) for:', loggedInUserIdentifier);
+
+                    // ***** IMPORTANT: Store login state in localStorage for index.html *****
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userIdentifier', loggedInUserIdentifier); // Store the name/username/email
+
+                    // Optional: Store email separately if needed
+                    // localStorage.setItem('userEmail', foundUserKey);
+
+                    // Redirect to the main page (index.html)
+                    window.location.href = 'index.html';
+
+                } else {
+                    // === Login Failed ===
+                    console.log('Login failed (localStorage DEMO) for input:', emailOrUsername);
+                    loginErrorDiv.textContent = 'Invalid email/username or password.';
+                    passwordInput.value = ''; // Clear password field on failure
+                    passwordInput.focus(); // Focus password field again
+                }
+                // --- End localStorage Check ---
+            });
+        });
+    </script>
+</body>
+</html>

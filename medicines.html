@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicines </title>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2&display=swap" rel="stylesheet">
+    <style>
+        /* Paste all your CSS styles here from the previous medicine.html code */
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #f8f9fa;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        /* Remove .header-top if not needed/used in HTML structure */
+        /* .header-top { ... } */
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+        }
+        /* Use .logo img instead of #logo img if the img is inside .logo */
+        .logo img {
+            height: 45px;
+            margin-right: 10px;
+        }
+        .logo span {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .main-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .main-nav li {
+            margin-left: 20px;
+            position: relative; /* Needed for submenu positioning */
+        }
+        .main-nav a {
+            text-decoration: none;
+            color: #333;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            display: block; /* Make link fill the li */
+        }
+        .main-nav a:hover,
+        .main-nav a.active {
+            background-color: #5cb85c;
+            color: white;
+        }
+        /* Submenu styles */
+        .main-nav ul ul {
+            display: none;
+            position: absolute;
+            background-color: #f8f9fa;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+            padding: 10px 0;
+            border-radius: 5px;
+            list-style: none; /* Add for consistency */
+            min-width: 160px; /* Add for consistency */
+            left: 0; /* Align submenu with parent */
+            top: 100%; /* Position below parent */
+        }
+        .main-nav li:hover > ul {
+            display: block;
+        }
+        .main-nav ul ul li {
+            margin: 0;
+            padding: 0; /* Remove padding from li */
+            white-space: nowrap;
+        }
+        .main-nav ul ul li a {
+            padding: 8px 20px; /* Add padding to link inside submenu */
+            color: #333;
+            background-color: transparent !important; /* Override hover on parent */
+        }
+        .main-nav ul ul li a:hover {
+            background-color: #e9ecef !important; /* Submenu hover */
+            color: #5cb85c !important; /* Submenu hover */
+        }
+        /* Cart icon styles */
+        .main-nav ul li img {
+            height: 25px;
+            vertical-align: middle;
+            /* Remove margin-right if the img is the only content in the link */
+            /* margin-right: 5px; */
+        }
+
+        /* Medicines Page Specific Styles */
+        .medicines-container { max-width: 1140px; margin: 20px auto; padding: 30px; background-color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); box-sizing: border-box; width: 95%; }
+        .medicines-container h1 { text-align: center; margin-bottom: 30px; color: #333; }
+        .medicines-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; padding: 0; }
+        .medicine-card { border: 1px solid #ddd; border-radius: 8px; padding: 20px; text-align: center; background-color: #f9f9f9; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; }
+        .medicine-card img { max-width: 80%; height: 150px; /* Fixed height */ object-fit: contain; margin: 0 auto 15px; border-radius: 4px; display: block; }
+        .medicine-card h3 { margin-top: 0; margin-bottom: 10px; color: #555; font-size: 1.1em; }
+        .medicine-card p { color: #777; margin-bottom: 15px; font-size: 0.9em; flex-grow: 1; /* Allow p to grow */ }
+        .medicine-card .price { font-weight: bold; color: #007bff; margin-bottom: 15px; font-size: 1.1em; }
+        .medicine-card .actions { display: flex; gap: 10px; justify-content: center; margin-top: auto; }
+        .medicine-card .btn-buy { background-color: #5cb85c; color: white; border: none; padding: 10px 15px; border-radius: 5px; text-decoration: none; cursor: pointer; transition: background-color 0.3s ease; font-size: 0.9em; }
+        .medicine-card .btn-buy:hover { background-color: #4cae4c; }
+
+        /* Footer styles */
+        footer { background-color: #333; color: #ccc; padding: 30px 20px; text-align: center; margin-top: 30px; font-size: 0.9em; }
+        footer ul { list-style: none; padding: 0; margin: 0 0 15px 0; }
+        footer ul.footer-details li { display: inline-block; margin: 0 10px 10px; }
+        footer ul li a { color: #f0f0f0; text-decoration: none; }
+        footer ul li a:hover { color: white; text-decoration: underline; }
+        .contact-details { list-style: none; padding: 0; margin-bottom: 20px; color: #ddd; }
+        .contact-details p { font-weight: bold; margin-bottom: 10px; color: #ccc; }
+        .contact-details li { display: block; margin: 8px auto; font-weight: normal; color: #ddd; }
+        .contact-details li i { margin-right: 5px; }
+        .contact-details li a { color: #f0f0f0; text-decoration: none; }
+        .contact-details li a:hover { color: white; text-decoration: underline; }
+        .float-right { float: right; margin-left: 20px; }
+        .float-right a { color: #f0f0f0; text-decoration: none; }
+        .float-right a:hover { color: white; text-decoration: underline; }
+        footer p { margin: 15px 0 0; clear: both; color: #aaa; font-size: 0.85em; }
+        footer p a { color: #ccc; text-decoration: none; }
+        footer p a:hover { color: white; text-decoration: underline; }
+
+        /* Profile Icon Dropdown (if needed - copied from previous version) */
+        .profile-icon-container { position: relative; margin-left: 20px; }
+        .profile-icon { display: inline-flex; align-items: center; justify-content: center; width: 35px; height: 35px; border-radius: 50%; background-color: #5cb85c; color: white; font-size: 1.1em; font-weight: bold; text-transform: uppercase; cursor: pointer; text-decoration: none; }
+        .profile-dropdown { display: none; position: absolute; right: 0; top: 100%; background-color: #f9f9f9; min-width: 120px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 20; border-radius: 5px; padding: 5px 0; list-style: none; margin: 5px 0 0 0; }
+        .profile-dropdown li a { color: black; padding: 8px 16px; text-decoration: none; display: block; font-size: 0.9em; background-color: transparent !important; }
+        .profile-dropdown li a:hover { background-color: #ddd !important; color: black !important; }
+        .profile-icon-container:hover .profile-dropdown { display: block; }
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <a href="index.html" class="logo">
+            <img src="images/Mental-Health-Logo-final.jpg" alt="MY WELLNEST">
+            <span>MY WELLNEST</span>
+        </a>
+        <nav class="main-nav">
+            <ul>
+                <li>
+                    <a href="index.html">HOME</a>
+                    <ul> <li><a href="index.html#doctors">Doctors</a></li>
+                        <li><a href="medicine.html">Medicines</a></li>
+                        <li><a href="reminder.html">Reminder</a></li>
+                    </ul>
+                </li>
+                <li><a href="about.html">ABOUT US</a></li>
+                <li><a href="contact-us.html">CONTACT US</a></li>
+                <li id="login-nav-item">
+                    <a href="login.html" class="btn">Login</a>
+                </li>
+                 <li><a href="cart.html"><img src="images/black-shopping-cart-icon-22.png" alt="Shopping Cart"></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="medicines-container">
+        <h1>Our Pharmacy</h1>
+        <div class="medicines-grid">
+            <div class="medicine-card" data-product-name="Pain Reliever" data-product-price="150" data-product-image="images/download.jpeg">
+                <img src="images/download.jpeg" alt="Pain Relief Medicine">
+                <h3>Pain Reliever</h3>
+                <p>Effective for headaches, body aches, and fever.</p>
+                <p class="price">₹ 150</p>
+                <div class="actions">
+                    <button class="btn-buy add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="medicine-card" data-product-name="Cough Syrup" data-product-price="120" data-product-image="images/485baecc-88dc-419e-875a-dd51a0940327.7074bae839c6eff0439c347a37f0c6e0.webp">
+                 <img src="images/485baecc-88dc-419e-875a-dd51a0940327.7074bae839c6eff0439c347a37f0c6e0.webp" alt="Cough Syrup">
+                <h3>Cough Syrup</h3>
+                <p>Relieves dry and wet cough, soothes throat.</p>
+                <p class="price">₹ 120</p>
+                <div class="actions">
+                    <button class="btn-buy add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="medicine-card" data-product-name="Multivitamin Tablets" data-product-price="250" data-product-image="images/500cd6b2-39c2-431d-b76b-8924f82d3135_1.01f905d94d3796ffe61135758224b6b6.webp">
+                 <img src="images/500cd6b2-39c2-431d-b76b-8924f82d3135_1.01f905d94d3796ffe61135758224b6b6.webp" alt="Multivitamin Tablets">
+                <h3>Multivitamin Tablets</h3>
+                <p>Daily supplement for overall health and immunity.</p>
+                <p class="price">₹ 250</p>
+                <div class="actions">
+                    <button class="btn-buy add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="medicine-card" data-product-name="Antacid" data-product-price="90" data-product-image="images/Equate-Extra-Strength-Antacid-Chewable-Wintergreen-Tablets-over-the-Counter-750-mg-96-Ct_fa02be5c-6dda-4bb6-97a7-850ef80b5dc0_1.d639d50e82b99fa5ce7a6bdd0d6a4f64.webp">
+                 <img src="images/Equate-Extra-Strength-Antacid-Chewable-Wintergreen-Tablets-over-the-Counter-750-mg-96-Ct_fa02be5c-6dda-4bb6-97a7-850ef80b5dc0_1.d639d50e82b99fa5ce7a6bdd0d6a4f64.webp" alt="Antacid">
+                <h3>Antacid</h3>
+                <p>Provides relief from heartburn and indigestion.</p>
+                <p class="price">₹ 90</p>
+                <div class="actions">
+                    <button class="btn-buy add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="medicine-card" data-product-name="First Aid Kit" data-product-price="499" data-product-image="images/OIP.jpeg">
+                 <img src="images/OIP.jpeg" alt="First Aid Kit">
+                <h3>First Aid Kit</h3>
+                <p>Essential items for minor injuries and emergencies.</p>
+                <p class="price">₹ 499</p>
+                <div class="actions">
+                    <button class="btn-buy add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="medicine-card" data-product-name="Digital Thermometer" data-product-price="350" data-product-image="images/OIP (2).jpeg">
+                 <img src="images/OIP (2).jpeg" alt="Digital Thermometer">
+                <h3>Digital Thermometer</h3>
+                <p>Accurate and easy to use for temperature measurement.</p>
+                <p class="price">₹ 350</p>
+                <div class="actions">
+                    <button class="btn-buy add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <ul class="footer-details">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact-us.html">Contact Us</a></li>
+            <li id="footer-login-link"><a href="login.html">Login</a></li>
+            <li id="footer-signup-link"><a href="signup.html">Sign Up</a></li>
+        </ul>
+        <ul class="contact-details">
+            <p>Quick Contact Details</p> <li><i class="fas fa-map-marker-alt"></i> A-15, Malviya Nagar, Jaipur</li>
+            <li><i class="fas fa-phone"></i> +91 8441912317</li>
+            <li><a href="#"><i class="fab fa-facebook-f"></i> Facebook</a></li>
+            <li><a href="#"><i class="fab fa-linkedin-in"></i> LinkedIn</a></li>
+        </ul>
+        <p class="float-right"><a href="#">Back to top</a></p>
+        <p>© 2025 MY WELLNEST, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // --- Handle Login Button / Profile Icon ---
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const userIdentifier = localStorage.getItem('userIdentifier');
+            const loginNavItem = document.getElementById('login-nav-item');
+            const navList = loginNavItem ? loginNavItem.closest('ul') : null;
+            const footerLoginLink = document.getElementById('footer-login-link');
+            const footerSignupLink = document.getElementById('footer-signup-link');
+
+            if (isLoggedIn && userIdentifier && loginNavItem && navList) {
+                loginNavItem.remove(); // Remove Login button LI
+
+                const profileLi = document.createElement('li');
+                profileLi.classList.add('profile-icon-container');
+
+                const profileIcon = document.createElement('div');
+                profileIcon.classList.add('profile-icon');
+                profileIcon.textContent = userIdentifier.charAt(0).toUpperCase();
+                profileIcon.title = userIdentifier;
+
+                const dropdownUl = document.createElement('ul');
+                dropdownUl.classList.add('profile-dropdown');
+
+                const logoutLinkLi = document.createElement('li');
+                const logoutLink = document.createElement('a');
+                logoutLink.href = '#';
+                logoutLink.textContent = 'Logout';
+                logoutLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userIdentifier');
+                    window.location.href = 'login.html'; // Redirect to login
+                });
+                logoutLinkLi.appendChild(logoutLink);
+                dropdownUl.appendChild(logoutLinkLi);
+                // Add other dropdown items like "Profile" here if needed
+
+                profileLi.appendChild(profileIcon);
+                profileLi.appendChild(dropdownUl);
+
+                // Insert profile icon before the cart icon
+                const cartItem = navList.querySelector('a[href="cart.html"]')?.closest('li');
+                if (cartItem) {
+                    navList.insertBefore(profileLi, cartItem);
+                } else {
+                    navList.appendChild(profileLi); // Fallback
+                }
+
+                // Hide footer login/signup
+                if (footerLoginLink) footerLoginLink.style.display = 'none';
+                if (footerSignupLink) footerSignupLink.style.display = 'none';
+            }
+
+            // --- Handle Add to Cart ---
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Re-check login status when adding to cart
+                    const isUserLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                    if (!isUserLoggedIn) {
+                        alert("Please log in to add items to your cart.");
+                        window.location.href = 'login.html'; // Redirect to login page
+                        return; // Stop processing
+                    }
+
+                    const medicineCard = this.closest('.medicine-card');
+                    const productName = medicineCard.dataset.productName;
+                    const productPrice = medicineCard.dataset.productPrice;
+                    const productImage = medicineCard.dataset.productImage; // Reads relative path
+
+                    // **Crucial Debugging Log:** Check the path being sent
+                    console.log('Adding to cart - Image Path:', productImage);
+
+                    if (!productImage) {
+                         console.error("Product image path is missing from data-product-image attribute!");
+                         alert("Error: Could not find product image path.");
+                         return;
+                    }
+
+
+                    const itemToAdd = {
+                        name: productName,
+                        price: productPrice,
+                        image: productImage, // Send the relative path
+                        quantity: 1
+                    };
+
+                    console.log('Attempting to add to cart:', itemToAdd);
+
+                    fetch('https://my-wellnest.netlify.app//api/cart/add', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(itemToAdd)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            console.error(`HTTP error! status: ${response.status}`);
+                            return response.json().catch(() => ({ error: 'Unknown error' })).then(errorData => {
+                                throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Success:', data);
+                        alert(`${productName} added to cart!`);
+                    })
+                    .catch((error) => {
+                        console.error('Error adding to cart:', error);
+                        let userMessage = 'Error adding item to cart. Please try again.';
+                        if (error.message.includes('Failed to fetch')) {
+                            userMessage = 'Could not connect to the backend server (http://localhost:3001). Please ensure it is running.';
+                        } else {
+                            userMessage = `An error occurred: ${error.message}`;
+                        }
+                        alert(userMessage);
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY WELLNESS</title>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+    <style>
+        /* --- YOUR EXISTING STYLES --- */
+        .card-container {
+            margin: 20px auto;
+            max-width: 1140px;
+            padding: 0 20px;
+            display: flex;
+            flex-wrap: wrap; /* Keep wrapping as you don't want horizontal scroll */
+            justify-content: center; /* Center cards when they don't fill a row */
+            gap: 20px; /* Use gap for consistent spacing */
+        }
+
+        .card-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            flex-basis: 100%;
+            width: 100%;
+            /* Ensure the heading takes full width above the cards */
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            /* Removed margin: 10px; - using gap on container instead */
+            text-align: center;
+            background-color: #f9f9f9;
+            /* Removed display: inline-block; - not needed for flex items */
+            width: calc(33.333% - 22px);
+            /* Keep width calculation for responsive wrapping */
+            vertical-align: top;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            /* flex-shrink is not necessary for wrapping layout, can remove */
+        }
+
+        /* Media queries for card width */
+        @media (max-width: 768px) {
+            .card {
+                width: calc(50% - 22px);
+                /* Adjusted for gap */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                width: calc(100% - 22px);
+                /* Adjusted for gap */
+            }
+        }
+
+
+        .card img {
+            max-width: 100%;
+            height: 150px;
+            /* Fixed height for consistency */
+            object-fit: cover;
+            border-radius: 4px;
+            display: block;
+            margin: 0 auto 10px;
+        }
+
+        .card .container {
+            padding: 10px 0;
+
+        }
+
+        .card h3 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .card p {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 10px;
+            min-height: 2.7em;
+            /* Reserve space for qualifications */
+        }
+
+        .card .btn2 {
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        .card .btn2:hover {
+            background-color: #4cae4c;
+        }
+
+        .slideshow-container {
+            max-width: 1000px;
+            position: relative;
+            margin: 20px auto 30px;
+        }
+
+        .mySlides {
+            display: none;
+        }
+
+        .mySlides img {
+            width: 100%;
+            height: auto;
+            display: block;
+            /* Prevent extra space */
+        }
+
+        .text {
+            color: #fff;
+            font-size: 1.2em;
+            padding: 20px;
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.6);
+            /* Slightly darker background */
+        }
+
+        .dot {
+            height: 15px;
+            width: 15px;
+            margin: 0 2px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+            cursor: pointer;
+        }
+
+        .active-dot {
+            background-color: #717171;
+        }
+
+        .fade {
+            animation-name: fade;
+            animation-duration: 1.5s;
+        }
+
+        @keyframes fade {
+            from {
+                opacity: .4
+            }
+
+            to {
+                opacity: 1
+            }
+        }
+
+        /* Basic nav styling (if not fully in index.css) */
+        nav {
+            background-color: #f8f9fa;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Add shadow to nav */
+        }
+
+        #logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            /* Make logo clickable */
+            color: inherit;
+        }
+
+        #logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        #logo div {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav li {
+            margin-left: 20px;
+            /* Spacing between top-level items */
+            position: relative;
+            /* Needed for submenu positioning */
+        }
+
+        /* Target only direct children links for main nav styling */
+        .nav>li>a {
+            text-decoration: none;
+            color: #333;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            display: block;
+            font-weight: 500;
+        }
+
+        /* Hover for main nav links */
+        .nav>li>a:hover {
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        /* Specific style for the Login button */
+        .nav>li>a.btn {
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        .nav>li>a.btn:hover {
+            background-color: #4cae4c;
+        }
+
+        /* Styling for nested sub-menu */
+        .nav ul {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 100%;
+            /* Position below parent */
+            background-color: #f8f9fa;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            /* Ensure dropdown is above content */
+            padding: 10px 0;
+            margin: 0;
+            /* Reset margin */
+            border-radius: 5px;
+            list-style: none;
+            min-width: 160px;
+            /* Minimum width */
+        }
+
+        .nav li:hover>ul {
+            /* Show sub-menu on hover */
+            display: block;
+        }
+
+        .nav ul li {
+            margin: 0;
+            /* Reset margin */
+            padding: 0;
+            /* Reset padding */
+        }
+
+        .nav ul li a {
+            padding: 8px 20px;
+            /* Padding for submenu links */
+            color: #333;
+            text-decoration: none;
+            display: block;
+            white-space: nowrap;
+            background-color: transparent !important;
+            /* Override parent hover */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .nav ul li a:hover {
+            background-color: #e9ecef !important;
+            /* Submenu hover */
+            color: #5cb85c !important;
+        }
+
+        .search-container {
+            margin-left: 20px;
+        }
+
+        .search-container form {
+            display: flex;
+            /* Align items */
+        }
+
+        .search-container input[type=text] {
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px 0 0 4px;
+            /* Round left corners */
+            font-size: 14px;
+            /* Adjusted */
+            border-right: none;
+        }
+
+        .search-container button {
+            padding: 6px 10px;
+            background: #ddd;
+            font-size: 14px;
+            /* Adjusted */
+            border: 1px solid #ccc;
+            border-left: none;
+            cursor: pointer;
+            border-radius: 0 4px 4px 0;
+            /* Round right corners */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-container button img {
+            width: 16px;
+            /* Control icon size */
+            height: 16px;
+            display: block;
+        }
+
+        .search-container button:hover {
+            background: #ccc;
+        }
+
+        /* Footer styles */
+        footer {
+            background-color: #333;
+            color: #ccc;
+            /* Base color */
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.9em;
+        }
+
+        footer ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+
+        footer ul.footer-details li {
+            /* Main links */
+            display: inline-block;
+            margin: 0 10px 10px;
+        }
+
+        footer ul.footer-details li a {
+            color: #f0f0f0;
+            text-decoration: none;
+        }
+
+        footer ul.footer-details li a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .contact-details {
+            /* Contact list specific */
+            margin-bottom: 20px;
+            /* More space below contacts */
+        }
+
+        .contact-details li {
+            display: block;
+            margin: 8px auto;
+            font-weight: normal;
+            color: #ddd;
+        }
+
+        .contact-details li a {
+            color: #f0f0f0;
+            text-decoration: none;
+        }
+
+        .contact-details li a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .float-right {
+            /* Keep if needed, but consider flexbox/grid */
+            float: right;
+            margin-left: 20px;
+        }
+
+        .float-right a {
+            color: #f0f0f0;
+            text-decoration: none;
+        }
+
+        .float-right a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        footer p {
+            /* Copyright text */
+            margin: 15px 0 0;
+            clear: both;
+            /* Clear float if using float-right */
+            color: #aaa;
+            font-size: 0.85em;
+        }
+
+        footer p a {
+            color: #ccc;
+            text-decoration: none;
+        }
+
+        footer p a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        /* --- ADDED CSS FOR PROFILE ICON --- */
+        .profile-icon-container {
+            position: relative;
+            /* For dropdown positioning */
+            margin-left: 20px;
+            /* Match other li margins */
+        }
+
+        .profile-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            /* Icon size */
+            height: 35px;
+            /* Icon size */
+            border-radius: 50%;
+            background-color: #5cb85c;
+            /* Theme color */
+            color: white;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            text-decoration: none;
+            /* Optional: Add a subtle border */
+            /* border: 1px solid #4cae4c; */
+        }
+
+        .profile-dropdown {
+            display: none;
+            /* Hidden by default */
+            position: absolute;
+            right: 0;
+            top: 100%;
+            /* Position below the icon */
+            background-color: #f9f9f9;
+            min-width: 120px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 20;
+            /* Ensure dropdown is above other elements */
+            border-radius: 5px;
+            padding: 5px 0;
+            list-style: none;
+            margin: 5px 0 0 0;
+            /* Small gap */
+        }
+
+        .profile-dropdown li a {
+            color: black;
+            padding: 8px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 0.9em;
+            background-color: transparent !important;
+            /* Override nav hover */
+        }
+
+        .profile-dropdown li a:hover {
+            background-color: #ddd !important;
+            /* Dropdown hover */
+            color: black !important;
+        }
+
+        .profile-icon-container:hover .profile-dropdown {
+            display: block;
+            /* Show on hover */
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div id="logo">
+            <img src="images/Mental-Health-Logo-final.jpg" alt="MY WELLNEST Logo">
+            <div><b>MY WELLNEST</b></div>
+        </div>
+        <ul class="nav">
+
+            <li>
+                <div id="home">Home</div>
+
+                <ul>
+                    <li><a href="#doctors">Doctors</a></li>
+                    <li><a href="medicine.html">Medicines</a></li>
+                    <li><a href="reminder.html">Reminder</a></li>
+                </ul>
+            </li>
+            <li><a href="about.html" id="about">About Us</a></li>
+            <li><a href="contact-us.html" id="contact">Contact Us</a></li>
+
+            <li id="login-nav-item">
+                <a href="login.html" class="btn">Login</a>
+            </li>
+           
+
+        </ul>
+    </nav>
+
+    <div class="slideshow-container">
+        <div class="mySlides fade">
+            <img src="images/carousel-final1.png" style="width:100%" alt="Carousel Image 1">
+            <div class="text">Consult the top doctors without disrupting your daily life.<br>Get an expert opinion in
+                the comfort of your house.</div>
+        </div>
+        <div class="mySlides fade">
+            <img src="images/carousel-final2.png" style="width:100%" alt="Carousel Image 2">
+            <div class="text">Your all in one stop.<br>Get doctors, medicines, consultations and more!</div>
+        </div>
+    </div>
+    <br>
+    <div style="text-align:center">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+    </div>
+
+    <div class="card-container" data-professional-type="Doctor">
+        <h2 id="doctors">Doctors</h2>
+        <div class="card">
+            <img src="https://medmonks.com//home/img/ckeditor_img/39361548737264.jpeg" alt="Dr Sameer Malhotra">
+            <div class="container">
+                <h3>Dr Sameer Malhotra</h3>
+                <p style="color:rgb(117, 173, 117)">MBBS│MD</p>
+                <i class="fas fa-inr" style="color:green ; padding:3px"></i>
+                <i class='fas fa-circle' style='font-size:8px ; padding:3px'></i>
+                <i class='fas fa-star' style='color:rgb(247, 186, 19) ; padding:3px '></i>
+                <i class='fas fa-circle' style='font-size:8px ; padding:3px'></i>
+                <i class='fas fa-heart' style="color:red ; padding:3px"></i>
+                <br>
+                <button class="btn2 book-appointment">Book</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="https://www.secondmedic.com/app/asset/site_images/newprofile/842487file1.webp"
+                alt="Dr. Abhishek Agrawal">
+            <div class="container">
+                <h3>Dr. Abhishek Agrawal</h3>
+                <p style="color:rgb(117, 173, 117)">MBBS│MD│DM Cardiology</p>
+                <i class="fas fa-inr" style="color:green ; padding:3px"></i>
+                <i class='fas fa-circle' style='font-size:8px ; padding:3px'></i>
+                <i class='fas fa-star' style='color:rgb(247, 186, 19) ; padding:3px '></i>
+                <i class='fas fa-circle' style='font-size:8px ; padding:3px'></i>
+                <i class='fas fa-heart' style="color:red ; padding:3px"></i>
+                <br>
+                <button class="btn2 book-appointment">Book</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="https://images.apollo247.in/doctors/1597f7c5-f731-44a2-a5a3-0f3d297682c0-1720152391694.jpeg?tr=q-80,f-auto,w-100,dpr-2,c-at_max"
+                alt="Dr. E Prabhakar Sastry">
+            <div class="container">
+                <h3>Dr. E Prabhakar Sastry</h3>
+                <p style="color:rgb(117, 173, 117)">General Physician│Internal Medicine</p>
+                <i class="fas fa-inr" style="color:green ; padding:3px"></i>
+                <i class='fas fa-circle' style='font-size:8px ; padding:3px'></i>
+                <i class='fas fa-star' style='color:rgb(247, 186, 19) ; padding:3px '></i>
+                <i class='fas fa-circle' style='font-size:8px ; padding:3px'></i>
+                <i class='fas fa-heart' style="color:red ; padding:3px"></i>
+                <br>
+                <button class="btn2 book-appointment">Book</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container" data-professional-type="Nutritionist">
+        <h2 id="nutritionist">Nutritionist</h2>
+        <div class="card">
+            <img src="https://cdn.prod.website-files.com/66ee99273eb418ef94056c05/671a1a0674ca0d16af070bd8_66e825a5abda0eb68ea73d39_AD_4nXel1U3fg9lESOAFi-Jz8BJLP1GDom_TcpnH3TxfWnCyTdm1joTQV7lsRRsd94_-VLQ6gj4kZ5kdyeeZ77kEfr1lPZ50XhSi9FD3KEdzAL8TdqpP4alNS3LFX0D8bR2Zde1dUalXLpHoaEhAfpHYhpE3JtFO0QHhC8BPOTyb.jpeg"
+                alt="Pooja Makhija">
+            <div class="container">
+                <h3>Pooja Makhija</h3>
+                <p style="color:rgb(117, 173, 117)">Celebrity Nutritionist</p> <i class="fas fa-inr"
+                    style="color:green ; padding:3px"></i>
+                <i class='fas fa-circle' style='font-size:8px ; padding:3px'></i>
+                <i class='fas fa-star' style='color:rgb(247, 186, 19) ; padding:3px '></i>
+                <i class='fas fa-circle' style='font-size:8px ; padding:3px'></i>
+                <i class='fas fa-heart' style="color:red ; padding:3px"></i>
+                <br>
+                <button class="btn2 book-appointment">Book</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="https://www.happiesthealth.com/wp-content/uploads/2023/11/Ishi-Khosla.jpeg"
+                alt="Ishi Khosla">
+            <div class="container">
+                <h3> Ishi Khosla</h3>
+                <p style="color:rgb(117, 173, 117)">Clinical Nutritionist</p> <i class="fas fa-inr"
+                    style="color:green ; padding:3px"></i>
+                <i class='fas fa-circle' style='font-size:8px ; padding:3px'></i>
+                <i class='fas fa-star' style='color:rgb(247, 186, 19) ; padding:3px '></i>
+                <i class='fas fa-circle' style='font-size:8px ; padding:3px'></i>
+                <i class='fas fa-heart' style="color:red ; padding:3px"></i>
+                <br>
+                <button class="btn2 book-appointment">Book</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="https://cdn.prod.website-files.com/66ee99273eb418ef94056c05/671a1a0674ca0d16af070bef_66e825a58a15088a127d9d6b_AD_4nXc8CfikiIRr8-2UVnkXIQi_p8kC-AcXu-2KRUXbQfX7UHbNNanCZL-ECZVc3AfFaUBmj4ddJ5peZfYA5oJN41Hk167mBAvw6Ne3T19RS90dJfHO98bkQQTqYo6GvB7kppLav8N1gFvC_i_KiSUmbwovuomFibue5CLGTx_agQ.jpeg"
+                alt="Dr. Shikha Sharma">
+            <div class="container">
+                <h3>Dr. Shikha Sharma</h3>
+                <p style="color:rgb(117, 173, 117)">MBBS, Wellness Consultant</p> <i class="fas fa-inr"
+                    style="color:green ; padding:3px"></i>
+                <i class='fas fa-circle' style='font-size:8px ; padding:3px'></i>
+                <i class='fas fa-star' style='color:rgb(247, 186, 19) ; padding:3px '></i>
+                <i class='fas fa-circle' style='font-size:8px ; padding:3px'></i>
+                <i class='fas fa-heart' style="color:red ; padding:3px"></i>
+                <br>
+                <button class="btn2 book-appointment">Book</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container" data-professional-type="Trainer">
+        <h2 id="trainer">Trainer</h2>
+        <div class="card">
+            <img src="https://kidsstoppress.com/wp-content/uploads/2021/09/1567750572.yasminkarachiwala-kidsstoppress-1-scaled.jpg"
+                alt="Yasmin Karachiwala">
+            <div class="container">
+                <h3>Yasmin Karachiwala</h3>
+                <p style="color:rgb(117, 173, 117)">Pilates Expert, Fitness Trainer</p> <i class="fas fa-inr"
+                    style="color:green ; padding:3px"></i>
+                <i class='fas fa-circle' style='font-size:8px ; padding:3px'></i>
+                <i class='fas fa-star' style='color:rgb(247, 186, 19) ; padding:3px '></i>
+                <i class='fas fa-circle' style='font-size:8px ; padding:3px'></i>
+                <i class='fas fa-heart' style="color:red ; padding:3px"></i>
+                <br>
+                <button class="btn2 book-appointment">Book</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="https://assets.vogue.in/photos/62e20e0c28ff7a2f63a0a4af/2:3/w_2560%2Cc_limit/Namrata%2520Purohit%25202.jpg"
+                alt="Namrata Purohit">
+            <div class="container">
+                <h3> Namrata Purohit</h3>
+                <p style="color:rgb(117, 173, 117)">Pilates Instructor, Author</p> <i class="fas fa-inr"
+                    style="color:green ; padding:3px"></i>
+                <i class='fas fa-circle' style='font-size:8px ; padding:3px'></i>
+                <i class='fas fa-star' style='color:rgb(247, 186, 19) ; padding:3px '></i>
+                <i class='fas fa-circle' style='font-size:8px ; padding:3px'></i>
+                <i class='fas fa-heart' style="color:red ; padding:3px"></i>
+                <br>
+                <button class="btn2 book-appointment">Book</button>
+            </div>
+        </div>
+        <div class="card">
+            <img src="https://starsunfolded.com/wp-content/uploads/2017/11/Prashant-Sawant......jpg"
+                alt="Prashant Sawant">
+            <div class="container">
+                <h3>Prashant Sawant</h3>
+                <p style="color:rgb(117, 173, 117)">Celebrity Fitness Trainer</p> <i class="fas fa-inr"
+                    style="color:green ; padding:3px"></i>
+                <i class='fas fa-circle' style='font-size:8px ; padding:3px'></i>
+                <i class='fas fa-star' style='color:rgb(247, 186, 19) ; padding:3px '></i>
+                <i class='fas fa-circle' style='font-size:8px ; padding:3px'></i>
+                <i class='fas fa-heart' style="color:red ; padding:3px"></i>
+                <br>
+                <button class="btn2 book-appointment">Book</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <ul class="footer-details">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact-us.html">Contact Us</a></li>
+            <li id="footer-login-link"><a href="login.html">Login</a></li>
+            <li id="footer-signup-link"><a href="signup.html">Sign Up</a></li>
+        </ul>
+        <ul class="contact-details">
+            <p style="font-weight: bold; margin-bottom: 10px;">Quick Contact Details</p>
+            <li><i class="fas fa-map-marker-alt"></i> A-15, Malviya Nagar, Jaipur</li>
+            <li><i class="fas fa-phone"></i> +91 8441912317</li>
+            <li><a href="#"><i class="fab fa-facebook-f"></i> Facebook</a></li>
+            <li><a href="#"><i class="fab fa-linkedin-in"></i> LinkedIn</a></li>
+        </ul>
+        <p class="float-right"><a href="#">Back to top</a></p>
+        <p>© 2025 MY WELLNEST, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // --- PART 1: Handle Login Button / Profile Icon ---
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const userIdentifier = localStorage.getItem('userIdentifier'); // Get identifier set by login page
+
+            const loginNavItem = document.getElementById('login-nav-item');
+            const navList = loginNavItem ? loginNavItem.parentNode : null; // Get the parent <ul> (.nav)
+
+            // Footer Links (Optional - hide login/signup in footer too if logged in)
+            const footerLoginLink = document.getElementById('footer-login-link');
+            const footerSignupLink = document.getElementById('footer-signup-link');
+
+
+            if (isLoggedIn && userIdentifier && loginNavItem && navList) {
+                // ---- Nav Bar Update ----
+                // 1. Remove the original Login button LI from Nav
+                loginNavItem.remove();
+
+                // 2. Create the profile icon element
+                const profileLi = document.createElement('li');
+                profileLi.classList.add('profile-icon-container'); // Add container class
+
+                const profileIcon = document.createElement('div');
+                profileIcon.classList.add('profile-icon');
+                profileIcon.textContent = userIdentifier.charAt(0).toUpperCase(); // Get the first letter
+                profileIcon.title = userIdentifier; // Tooltip showing full name/email
+
+                // 3. Create the dropdown menu
+                const dropdownUl = document.createElement('ul');
+                dropdownUl.classList.add('profile-dropdown');
+
+                // Add "Logout" item to dropdown
+                const logoutLinkLi = document.createElement('li');
+                const logoutLink = document.createElement('a');
+                logoutLink.href = '#'; // Prevent navigation
+                logoutLink.textContent = 'Logout';
+                logoutLink.addEventListener('click', function (e) {
+                    e.preventDefault(); // Prevent '#' jump
+                    // Clear login state from localStorage
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userIdentifier');
+                    // Redirect to login page or refresh current page
+                    window.location.href = 'login.html'; // Or window.location.reload();
+                });
+                logoutLinkLi.appendChild(logoutLink);
+                dropdownUl.appendChild(logoutLinkLi);
+                // You could add a "Profile" link here too if needed
+
+                // Append icon and dropdown to the container LI
+                profileLi.appendChild(profileIcon);
+                profileLi.appendChild(dropdownUl);
+
+                // 4. Append the new profile icon LI to the navigation list
+                const searchContainer = navList.querySelector('.search-container');
+                if (searchContainer) {
+                    navList.insertBefore(profileLi, searchContainer); // Insert before search
+                } else {
+                    navList.appendChild(profileLi); // Fallback append
+                }
+
+                // ---- Footer Update (Optional) ----
+                if (footerLoginLink) footerLoginLink.style.display = 'none';
+                if (footerSignupLink) footerSignupLink.style.display = 'none';
+
+
+            } // else: User is not logged in, the original Login button remains visible.
+
+
+            // --- PART 2: Carousel Script (Your Existing Logic) ---
+            let slideIndex = 1;
+            let autoSlideTimeout; // To manage the automatic slideshow timeout
+
+            function showSlides(n) {
+                let i;
+                let slides = document.getElementsByClassName("mySlides");
+                let dots = document.getElementsByClassName("dot");
+                if (!slides || slides.length === 0 || !dots || dots.length === 0) return; // Exit if elements not found
+
+                if (n > slides.length) { slideIndex = 1 }
+                if (n < 1) { slideIndex = slides.length }
+                for (i = 0; i < slides.length; i++) {
+                    slides[i].style.display = "none";
+                }
+                for (i = 0; i < dots.length; i++) {
+                    dots[i].className = dots[i].className.replace(" active-dot", "");
+                }
+                slides[slideIndex - 1].style.display = "block";
+                dots[slideIndex - 1].className += " active-dot";
+
+                // Reset auto slide timer whenever a slide is manually changed or shown
+                clearTimeout(autoSlideTimeout);
+                autoSlideTimeout = setTimeout(autoShowSlides, 5000); // Restart timer
+            }
+
+            // Function for clicking dots - make global for onclick attribute
+            window.currentSlide = function (n) {
+                showSlides(n);
+            }
+
+            // Function for automatic slideshow
+            function autoShowSlides() {
+                slideIndex++; // Use the main slideIndex
+                showSlides(slideIndex); // Call showSlides which handles index reset and timer
+            }
+
+            // Initial call to start the slideshow
+            if (document.getElementsByClassName("mySlides").length > 0) {
+                showSlides(slideIndex);
+            }
+
+
+            // --- PART 3: Appointment Booking Script ---
+            const bookButtons = document.querySelectorAll('.book-appointment');
+
+            bookButtons.forEach(button => {
+                button.addEventListener('click', function () {
+
+                    // ***** ADDED: Login Check Before Booking *****
+                    const isUserLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                    if (!isUserLoggedIn) {
+                        alert("Please log in to book an appointment.");
+                        window.location.href = 'login.html'; // Redirect to login page
+                        return; // Stop the booking function here
+                    }
+                    // *********************************************
+
+                    // --- If logged in, proceed with booking ---
+                    const card = this.closest('.card');
+                    const container = this.closest('.card-container');
+                    const professionalType = container ? container.dataset.professionalType : 'Unknown Professional'; // Safer access
+                    const professionalNameElement = card ? card.querySelector('.container h3') : null;
+                    const professionalName = professionalNameElement ? professionalNameElement.textContent.trim() : 'Unknown'; // Safer access
+
+                    const appointmentDate = prompt(`Enter appointment date for ${professionalName} (${professionalType}) (YYYY-MM-DD):`);
+                    if (!appointmentDate) { // User cancelled date prompt
+                        alert("Booking cancelled.");
+                        return;
+                    }
+                    // Basic date format validation (can be improved)
+                    if (!/^\d{4}-\d{2}-\d{2}$/.test(appointmentDate)) {
+                        alert("Invalid date format. Please use YYYY-MM-DD.");
+                        return;
+                    }
+
+
+                    const appointmentTime = prompt(`Enter appointment time for ${professionalName} (${professionalType}) (HH:MM - 24-hour format):`);
+                    if (!appointmentTime) { // User cancelled time prompt
+                        alert("Booking cancelled.");
+                        return;
+                    }
+                    // Basic time format validation (can be improved)
+                    if (!/^\d{2}:\d{2}$/.test(appointmentTime)) {
+                        alert("Invalid time format. Please use HH:MM (e.g., 14:30).");
+                        return;
+                    }
+
+
+                    const appointmentDetails = {
+                        type: professionalType,
+                        name: professionalName,
+                        date: appointmentDate,
+                        time: appointmentTime,
+                        // Optional: Include user identifier if needed by backend
+                        // userId: localStorage.getItem('userIdentifier')
+                    };
+
+                    console.log('Attempting to book appointment:', appointmentDetails);
+
+                    // Here you would typically send this data to a server using fetch() or XMLHttpRequest
+                    // Example using fetch (requires a backend endpoint):
+                    /*
+                    fetch('/api/book-appointment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            // Include authorization token if needed
+                            // 'Authorization': 'Bearer YOUR_TOKEN'
+                        },
+                        body: JSON.stringify(appointmentDetails)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Booking failed');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        alert(`Appointment booked successfully! Booking ID: ${data.bookingId}`);
+                        // Optionally update UI or redirect
+                    })
+                    .catch(error => {
+                        console.error('Booking error:', error);
+                        alert('Failed to book appointment. Please try again.');
+                    });
+                    */
+
+                    // For this example, we'll just show a confirmation prompt
+                    const confirmation = confirm(`Confirm booking for ${professionalName} (${professionalType}) on ${appointmentDate} at ${appointmentTime}?`);
+
+                    if (confirmation) {
+                        alert(`Appointment booked successfully with ${professionalName} (${professionalType}) for ${appointmentDate} at ${appointmentTime}!`);
+                        // In a real application, you would handle the server response here
+                    } else {
+                        alert("Booking cancelled.");
+                    }
+                });
+            });
+
+        }); // End DOMContentLoaded
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY WELLNESS</title>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+             /* Use flexbox for body to push footer down if needed */
+             display: flex;
+             flex-direction: column;
+             min-height: 100vh;
+        }
+
+        /* Header Styles - MODIFIED for proper flex layout */
+        header {
+            background-color: #f8f9fa;
+            padding: 10px 20px; /* Adjusted padding for better look */
+            display: flex; /* Make header a flex container */
+            justify-content: space-between; /* Put space between logo and nav */
+            align-items: center; /* Vertically align items */
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+             flex-shrink: 0; /* Prevent header from shrinking */
+        }
+
+         /* Removed .header-top as it's no longer needed in the HTML structure */
+         /* .header-top { ... } */
+
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+            /* Removed margin-right */
+             flex-shrink: 0; /* Prevent logo from shrinking */
+        }
+
+        .logo img {
+            height: 45px; /* Use consistent logo height (adjust if needed) */
+            margin-right: 10px;
+        }
+
+        .logo span {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .main-nav {
+            /* Removed positioning and margins that conflict with flexbox */
+            /* right:50px; */
+            /* margin-top: 30px; */
+            /* margin-left: 20px; */
+        }
+
+        .main-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex; /* Make ul a flex container */
+            align-items: center; /* Vertically align nav items */
+            flex-wrap: wrap; /* Allow nav items to wrap */
+        }
+
+        .main-nav li {
+            margin-left: 20px; /* Space between nav items */
+        }
+
+        /* Ensure general nav link styles are applied */
+        .main-nav a {
+            text-decoration: none;
+            color: #333;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Nav link hover and active effect */
+        .main-nav a:hover,
+        .main-nav a.active {
+            background-color: #5cb85c;
+            color: white;
+        }
+
+         /* Styling for nested sub-menu (from index.html, assuming needed for consistency) */
+         .main-nav ul ul {
+             display: none;
+             position: absolute;
+             background-color: #f8f9fa;
+             box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+             z-index: 1;
+             padding: 10px 0;
+             border-radius: 5px;
+         }
+
+          .main-nav li:hover > ul {
+              display: block;
+          }
+
+          .main-nav ul li {
+              margin: 0;
+              padding: 8px 20px;
+              white-space: nowrap;
+          }
+
+         .main-nav ul li a {
+             padding: 0;
+             color: #333;
+         }
+
+         .main-nav ul li a:hover {
+             background-color: transparent;
+             color: #5cb85c;
+         }
+
+         /* Style for images within nav links (like the cart icon) */
+         .main-nav a img {
+              height: 25px; /* Use consistent icon height (adjust if needed) */
+              vertical-align: middle;
+              margin-right: 0; /* No margin needed if icon is the only content */
+         }
+
+
+        /* Cart Page Specific Styles */
+        .cart-container {
+            max-width: 960px;
+            margin: 30px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            width: 95%;
+             /* Allow cart container to grow and push footer down */
+            flex-grow: 1;
+        }
+
+        .cart-container h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+            font-size: 1.2em;
+        }
+
+        .cart-items {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .cart-items th,
+        .cart-items td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-items th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+
+        .cart-items tr:last-child td {
+            border-bottom: none;
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .cart-item-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-item-info img {
+            margin-right: 10px;
+        }
+
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+
+        .quantity-control button {
+            background-color: #eee;
+            border: 1px solid #ddd;
+            padding: 5px 8px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .quantity-control button:hover {
+             background-color: #ddd;
+        }
+
+
+        .quantity-control span {
+            margin: 0 10px;
+            font-size: 1em;
+        }
+
+        .remove-item-btn {
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 1em;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        .remove-item-btn:hover {
+            background-color: #fdecea;
+        }
+
+        .cart-total {
+            text-align: right;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .checkout-btn {
+            display: block;
+            width: 200px;
+            margin-left: auto;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+            text-align: center;
+        }
+
+        .checkout-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Footer styles - Consistent with index.html */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-top: 30px; /* Adds space above the footer */
+             flex-shrink: 0; /* Prevent footer from shrinking in flex layout */
+             /* No position: fixed or similar */
+        }
+
+        footer ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+
+        footer ul li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        footer ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        footer ul li a:hover {
+            text-decoration: underline;
+        }
+
+        .contact-details {
+             list-style: none;
+             padding: 0;
+             margin-bottom: 15px;
+             font-weight: bold;
+        }
+
+        .contact-details li {
+             display: block; /* Display list items vertically */
+             margin: 5px 0;
+             font-weight: normal;
+        }
+
+        .contact-details li a {
+             color: white;
+             text-decoration: none;
+        }
+
+         .contact-details li a:hover {
+             text-decoration: underline;
+         }
+
+        .float-right {
+            float: right;
+        }
+
+        .float-right a {
+             color: white;
+             text-decoration: none;
+        }
+         .float-right a:hover {
+            text-decoration: underline;
+         }
+
+        footer p {
+            margin: 5px 0;
+        }
+         footer p a {
+             color: white;
+             text-decoration: none;
+         }
+         footer p a:hover {
+             text-decoration: underline;
+         }
+
+    </style>
+</head>
+
+<body>
+    <header>
+         <a href="index.html" class="logo">
+                <img src="images/Mental-Health-Logo-final.jpg" alt="MY WELLNEST">
+                <span>MY WELLNEST</span>
+            </a>
+            <nav class="main-nav">
+                <ul>
+                     <li><a href="index.html"> HOME</a></li>
+                    <li><a href="about.html">ABOUT US</a></li>
+                    <li><a href="medicine.html">MEDICINES</a></li>
+            </nav>
+    </header>
+
+    <div class="cart-container">
+        <h1>Your Cart</h1>
+
+        <table class="cart-items">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="cart-items-body">
+                </tbody>
+        </table>
+
+        <div class="cart-total">
+            Total: <span id="cart-total-amount">0</span> </div>
+
+            <a href="checkout.html" class="checkout-btn">Proceed to Checkout</a>
+        <div class="cart-empty" id="empty-cart-message" style="display:none;">
+            <p>Your cart is currently empty.</p>
+            <p><a href="medicine.html">Browse our medicines</a> to add items to your cart.</p>
+        </div>
+
+    </div>
+
+    <footer>
+        <ul class="footer-details">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact-us.html">Contact Us</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">signup</a></li>
+        </ul>
+        <ul class="contact-details">Quick Contact Details
+            <li>Address:A-15,Malviya nagar,Jaipur</li>
+            <li>Contact No. : 8441912317</li>
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">LinkedIn</a></li>
+        </ul>
+        <p class="float-right"><a href="#">Back to top</a></p>
+        <p>© 2025 MY WELLNEST, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cartItemsBody = document.getElementById('cart-items-body');
+            const cartTotalAmount = document.getElementById('cart-total-amount');
+            const emptyCartMessage = document.getElementById('empty-cart-message');
+            const cartTable = document.querySelector('.cart-items');
+            const checkoutButton = document.querySelector('.checkout-btn'); // Make sure this class exists on your button/link
+    
+            // Function to update the visibility of the table, total, and empty message
+            function updateCartVisibility(cartIsEmpty) {
+                if (cartIsEmpty) {
+                    cartTable.style.display = 'none';
+                    document.querySelector('.cart-total').style.display = 'none';
+                    if(checkoutButton) checkoutButton.style.display = 'none'; // Check if exists
+                    emptyCartMessage.style.display = 'block';
+                } else {
+                    cartTable.style.display = 'table'; // Or 'block' if not using table layout
+                    document.querySelector('.cart-total').style.display = 'block';
+                     if(checkoutButton) checkoutButton.style.display = 'block'; // Check if exists
+                    emptyCartMessage.style.display = 'none';
+                }
+            }
+    
+    
+            function updateCartDisplay() {
+                fetch('http://localhost:3001/api/cart') // Ensure this URL is correct
+                    .then(response => {
+                        if (!response.ok) {
+                            console.error(`HTTP error! status: ${response.status}`);
+                            cartItemsBody.innerHTML = '<tr><td colspan="5">Error loading cart data. Is the backend server running?</td></tr>';
+                            updateCartVisibility(true);
+                            cartTotalAmount.textContent = 'N/A';
+                             throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(cartData => {
+                        cartItemsBody.innerHTML = '';
+                        let total = 0;
+    
+                        // **Crucial Debugging Log:** Check the data received
+                        console.log("Cart data received from backend:", cartData);
+    
+                        if (!Array.isArray(cartData) || cartData.length === 0) {
+                             console.log("Cart is empty or data is not an array.");
+                            updateCartVisibility(true); // Cart is empty
+                        } else {
+                            updateCartVisibility(false); // Cart has items
+    
+                            cartData.forEach(item => {
+                                // **Crucial Debugging Log:** Check each item's image path
+                                console.log(`Processing item: ${item.name}, Image path: ${item.image}`);
+    
+                                if (!item.image) {
+                                    console.warn(`Item "${item.name}" is missing an image path!`);
+                                }
+    
+                                const row = cartItemsBody.insertRow();
+                                row.dataset.itemName = item.name;
+    
+                                const itemCell = row.insertCell();
+                                // Use the received item.image path
+                                itemCell.innerHTML = `
+                                    <div class="cart-item-info">
+                                        <img src="${item.image || 'images/placeholder.png'}" alt="${item.name}" class="cart-item-image"> <span>${item.name || 'N/A'}</span>
+                                    </div>
+                                `;
+    
+                                const priceCell = row.insertCell();
+                                priceCell.classList.add('item-price');
+                                // Ensure price is treated as a number for calculations, display appropriately
+                                const itemPrice = parseFloat(item.price || 0);
+                                priceCell.textContent = itemPrice.toFixed(2); // Format to 2 decimal places
+    
+                                const quantityCell = row.insertCell();
+                                // Ensure quantity is treated as a number
+                                const itemQuantity = parseInt(item.quantity || 1);
+                                quantityCell.innerHTML = `
+                                    <div class="cart-item-actions">
+                                        <div class="quantity-control">
+                                            <button class="decrease-quantity">-</button>
+                                            <span class="item-quantity">${itemQuantity}</span>
+                                            <button class="increase-quantity">+</button>
+                                        </div>
+                                    </div>
+                                `;
+    
+                                const subtotalCell = row.insertCell();
+                                subtotalCell.classList.add('item-subtotal');
+                                subtotalCell.textContent = (itemPrice * itemQuantity).toFixed(2);
+    
+                                const actionsCell = row.insertCell();
+                                actionsCell.innerHTML = '<button class="remove-item-btn">Remove</button>';
+    
+                                total += (itemPrice * itemQuantity);
+                            });
+                        }
+    
+                        cartTotalAmount.textContent = total.toFixed(2); // Format total
+                    })
+                    .catch(error => {
+                        console.error('Error fetching or displaying cart:', error);
+                         cartItemsBody.innerHTML = '<tr><td colspan="5">Error loading cart. Check console and backend server.</td></tr>';
+                         updateCartVisibility(true);
+                        cartTotalAmount.textContent = 'N/A';
+                    });
+            }
+    
+            // --- Initial Load ---
+            updateCartDisplay();
+    
+            // --- Event Listeners for Remove/Quantity (Keep your existing logic) ---
+            cartItemsBody.addEventListener('click', function(event) {
+                 const target = event.target;
+                 const row = target.closest('tr');
+                 if (!row) return; // Exit if click wasn't inside a row
+    
+                 const itemName = row.dataset.itemName;
+    
+                // REMOVE item
+                 if (target.classList.contains('remove-item-btn')) {
+                     console.log(`[Frontend Only] Attempting to remove item: ${itemName}`);
+                     // TODO: Add fetch call to backend to remove item persistentl
+                     row.remove();
+                     updateCartTotalFromTable();
+                     if (cartItemsBody.querySelectorAll('tr').length === 0) {
+                         updateCartVisibility(true);
+                     }
+                 }
+                 // INCREASE quantity
+                 else if (target.classList.contains('increase-quantity')) {
+                     const quantitySpan = row.querySelector('.item-quantity');
+                     if (quantitySpan) {
+                         let currentQuantity = parseInt(quantitySpan.textContent);
+                         let newQuantity = currentQuantity + 1;
+                         console.log(`[Frontend Only] Attempting to increase quantity for ${itemName} to ${newQuantity}`);
+                         // TODO: Add fetch call to backend to update quantity
+                         quantitySpan.textContent = newQuantity;
+                         updateSubtotal(row);
+                         updateCartTotalFromTable();
+                     }
+                 }
+                // DECREASE quantity
+                 else if (target.classList.contains('decrease-quantity')) {
+                     const quantitySpan = row.querySelector('.item-quantity');
+                     if (quantitySpan) {
+                         let currentQuantity = parseInt(quantitySpan.textContent);
+                         if (currentQuantity > 1) {
+                             let newQuantity = currentQuantity - 1;
+                             console.log(`[Frontend Only] Attempting to decrease quantity for ${itemName} to ${newQuantity}`);
+                             // TODO: Add fetch call to backend to update quantity
+                             quantitySpan.textContent = newQuantity;
+                             updateSubtotal(row);
+                             updateCartTotalFromTable();
+                         } else {
+                             // Optional: Ask if they want to remove the item if quantity reaches 0
+                             console.log(`[Frontend Only] Quantity is 1 for ${itemName}, cannot decrease further without removing.`);
+                         }
+                     }
+                 }
+            });
+    
+            // Helper function to update subtotal for a row
+            function updateSubtotal(row) {
+                const priceElement = row.querySelector('.item-price');
+                const quantityElement = row.querySelector('.item-quantity');
+                const subtotalElement = row.querySelector('.item-subtotal');
+    
+                if (priceElement && quantityElement && subtotalElement) {
+                    const price = parseFloat(priceElement.textContent);
+                    const quantity = parseInt(quantityElement.textContent);
+                    subtotalElement.textContent = (price * quantity).toFixed(2);
+                }
+            }
+    
+            // Helper function to recalculate total from table rows
+            function updateCartTotalFromTable() {
+                let total = 0;
+                const subtotalElements = cartItemsBody.querySelectorAll('.item-subtotal');
+                subtotalElements.forEach(subtotalElement => {
+                    total += parseFloat(subtotalElement.textContent);
+                });
+                cartTotalAmount.textContent = total.toFixed(2);
+    
+                // Update visibility based on whether rows exist
+                const itemsExist = cartItemsBody.querySelectorAll('tr').length > 0;
+                updateCartVisibility(!itemsExist);
+            }
+        });
+    </script>
+</body>
+
+</html>
